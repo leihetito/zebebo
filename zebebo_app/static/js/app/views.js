@@ -32,7 +32,8 @@ var BoardItemView = Backbone.View.extend({
     events : {
         "click a"       : "make_active",
         "click .edit"   : "edit",
-        "click .delete" : "del"
+        "click .delete" : "del",
+        "click .add"    : "add_leg"
     },
     initialize : function () {
         $(this.el).attr("id", "boarditem-" + this.model.get("id"))
@@ -54,6 +55,10 @@ var BoardItemView = Backbone.View.extend({
             $(this.el).remove();
             $(app.board_view.el).masonry('reload');
         }
+    },
+    add_leg: function(e) {
+        e.preventDefault();
+        
     },
     render : function () {
         $(this.el).html(this.template({"item" : this.model.toJSON()}))
@@ -86,7 +91,8 @@ var BoardSetView = Backbone.View.extend({
 
 var EditView = Backbone.View.extend({
     
-    template : _.template($("#EditTripTemplate").html()),
+    //template : _.template($("#EditTripTemplate").html()),
+    el: $("#dialog-add-booking"),
     
     events: {
       "click .save":            "save",
@@ -99,9 +105,8 @@ var EditView = Backbone.View.extend({
     },
 
     render: function() {
-        alert("here1");
-        $(this.el).html(this.template({"item" : this.model.toJSON()}))
-        
+        //$(this.el).html(this.template({"item" : this.model.toJSON()}))
+                     
         $(this.el).modal({
             backdrop: true,
             keyboard: false,

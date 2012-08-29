@@ -98,6 +98,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.static',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
+    
+    'allauth.context_processors.allauth',
+    'allauth.account.context_processors.account',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,9 +111,17 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 ROOT_URLCONF = 'zebebo_app.urls'
 
 TEMPLATE_DIRS = (here('templates'),)
+
+AVATAR_STORAGE_DIR = 'uploads/avatars'
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_EMAIL_REQUIRED = True
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -121,6 +132,16 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
 
+    # django-allauth
+    'avatar',
+    'uni_form',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.facebook',
+    'emailconfirmation',
+    
     # zebebo_app applicatons
     'zebebo_app.board',
 )

@@ -16,17 +16,9 @@
             });
         }
     </script>
-    <script>
-	
-    $(function() {
-    	jQuery(function() {
-       jQuery("#from_date").datepicker();
-   		});
-
-	</script>
 {% endblock %}
 
-{% block content %}
+{% block content %}    
     <div id="select-board">
         <a style="float:right; margin-top:4px; margin-bottom:3px;" class="btn new" 
         href="#">Add Trip</a>
@@ -64,7 +56,10 @@
         <div class="title"><a href="/board/<%= item.id %>"><%= item.title %></a></div>
         <p class="description"><%= item.origin %> - <%= item.destination %></p>
         <div>
-        	<span class="editdelete"><a href="#" class="edit">edit</a> &middot; <a href="#" class="delete">delete</a></span></span>
+        	<span class="editdelete"><a href="#" class="edit">edit</a> &middot; 
+        		                     <a href="#" class="delete">delete</a> &middot; 
+        		                     <a href="#" class="add">add</a>
+            </span>
         </div>
     </script>
 
@@ -82,48 +77,54 @@
         </a>
     </script>
 	
-    <script type="text/template" id="EditTripTemplate">
-    <div class="modal">
-<div class="modal-header">
-    <a href="#" class="close">&times;</a>
-    <h3>Edit Trip</h3>
-</div>
-<div class="modal-body">
-    <form>
-        <fieldset>           
+	<div id="dialog-add-booking" title="Add booking to your trip" style="display:none" class="modal">
+		<div class="modal-header">
+    		<a href="#" class="close">&times;</a>
+    		<h3>Edit Trip</h3>
+		</div>
+		<div class="modal-body">
+    		<form>
+        		<fieldset>           
         
-            <div class="clearfix">
-                <label for="title">Title</label>
-                <div class="input">
-                    <input name="title" type="text" value="<%= item.title %>" class="span6" />
-                </div>
-            </div><!-- /clearfix -->
+            		<div class="clearfix">
+		                <label for="title">Title</label>
+		                <div class="input">
+		                    <input name="title" type="text" class="span6" />
+                		</div>
+            		</div><!-- /clearfix -->
             
-            <div class="clearfix">
-                <label for="origin">Origin</label>
-                <div class="input">
-                    <input name="origin" type="text" value="<%= item.origin %>" class="span6" />
-                </div>
-            </div><!-- /clearfix -->
-            
-            <div class="clearfix">
-                <label for="destination">Destination</label>
-                <div class="input">
-                    <input name="destination" type="text" value="<%= item.destination %>" class="span6" />
-                </div>
-            </div><!-- /clearfix -->   
- 
-                <label for="from_date">From</label>
-                <div class="input">
-                    <input name="from_date" id="from_date" type="text" class="span6" />
-                </div> 
-        </fieldset>
-    </form>
-</div>
-<div class="modal-footer">
-    <button type="reset" class="btn cancel">Cancel</button> <button type="submit" class="btn primary save">Save Changes</button>
-</div>
-</div>
+		            <div class="clearfix">
+		                <label for="origin">Origin</label>
+		                <div class="input">
+		                    <input name="origin" type="text" class="span6" />
+		                </div>
+		            </div><!-- /clearfix -->
+		            
+		            <div class="clearfix">
+		                <label for="destination">Destination</label>
+		                <div class="input">
+		                    <input name="destination" type="text" class="span6" />
+		                </div>
+		            </div><!-- /clearfix -->   
+
+					<div class="clearfix">
+		                <label for="fromdate">From</label>
+		                <div class="input">
+		                    <input id="from_date" name="from_date" type="text" class="span6" />
+		                </div>
+		            </div><!-- /clearfix -->
+		        </fieldset>
+		    </form>
+		</div>
+		<div class="modal-footer">
+		    <button type="reset" class="btn cancel">Cancel</button> <button type="submit" class="btn primary save">Save Changes</button>
+		</div>
+    </div>
+	
+        
+     <script>
+		$(document).ready(function(){
+			$("#from_date").datepicker({ showOn: 'button', buttonText: "select" });
+		});
 	</script>
-    
 {% endblock %}

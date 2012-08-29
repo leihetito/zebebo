@@ -4,3 +4,5 @@
 data
 .project
 .pydevproject
+fabfile.py
+deplyment.doc
