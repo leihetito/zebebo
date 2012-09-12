@@ -91,8 +91,8 @@ var BoardSetView = Backbone.View.extend({
 
 var EditView = Backbone.View.extend({
     
-    //template : _.template($("#EditTripTemplate").html()),
-    el: $("#dialog-add-booking"),
+    template : _.template($("#ModalTemplate").html()),
+    el: $("#modal"),
     
     events: {
       "click .save":            "save",
@@ -105,13 +105,16 @@ var EditView = Backbone.View.extend({
     },
 
     render: function() {
-        //$(this.el).html(this.template({"item" : this.model.toJSON()}))
-                     
+        //$(this.el).html(this.model.toJSON());
+        $(this.el).empty();
+        $(this.el).append(this.template({"item" : this.model.toJSON()}))
         $(this.el).modal({
             backdrop: true,
             keyboard: false,
             show: true
         });
+        
+        return this;
     },
     
     unrender: function() {
@@ -125,8 +128,11 @@ var EditView = Backbone.View.extend({
         var title = this.$('input[name=title]').val();
         var origin = this.$('input[name=origin]').val();
         var destination = this.$('input[name=destination]').val();
+        var fromDate = this.$('input[name=from_date]').val();
+        var toDate = this.$('input[name=to_date]').val();
        
-        this.model.set({ title: title, origin: origin, destination: destination });
+        this.model.set({ title: title, origin: origin, destination: destination, 
+                         fromDate: fromDate, toDate: toDate });
         this.model.save();
 
         app.boards.fetch();

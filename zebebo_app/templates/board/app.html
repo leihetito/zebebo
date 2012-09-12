@@ -24,6 +24,7 @@
         href="#">Add Trip</a>
          <ul class="nav nav-tabs"></ul>
     </div>
+   
     <div class="row-fluid" id="app">
         <div id="stages"></div>
     </div>
@@ -76,8 +77,10 @@
             <%= description %>
         </a>
     </script>
+
 	
-	<div id="dialog-add-booking" title="Add booking to your trip" style="display:none" class="modal">
+
+	<script type="text/template" id="ModalTemplate">
 		<div class="modal-header">
     		<a href="#" class="close">&times;</a>
     		<h3>Edit Trip</h3>
@@ -89,7 +92,7 @@
             		<div class="clearfix">
 		                <label for="title">Title</label>
 		                <div class="input">
-		                    <input name="title" type="text" class="span6" />
+		                    <input name="title" type="text" class="span6" value="<%= item.title %>" />
                 		</div>
             		</div><!-- /clearfix -->
             
@@ -113,18 +116,32 @@
 		                    <input id="from_date" name="from_date" type="text" class="span6" />
 		                </div>
 		            </div><!-- /clearfix -->
+		            
+		            <div class="clearfix">
+		                <label for="fromdate">To</label>
+		                <div class="input">
+		                    <input id="to_date" name="to_date" type="text" class="span6" />
+		                </div>
+		            </div><!-- /clearfix -->
 		        </fieldset>
 		    </form>
 		</div>
 		<div class="modal-footer">
 		    <button type="reset" class="btn cancel">Cancel</button> <button type="submit" class="btn primary save">Save Changes</button>
 		</div>
-    </div>
-	
-        
-     <script>
-		$(document).ready(function(){
-			$("#from_date").datepicker({ showOn: 'button', buttonText: "select" });
-		});
 	</script>
+	<div class="modal" id="modal"></div>
+	
+	<script>
+		$(document).ready(function() {
+			$('#from_date').live('click', function() {
+    			$(this).datepicker('destroy').datepicker({dateFormat: 'yy-mm-dd'}).focus();
+        	});
+        	$('#to_date').live('click', function() {
+    			$(this).datepicker('destroy').datepicker({dateFormat: 'yy-mm-dd'}).focus();
+        	});
+		});
+
+	</script>
+      
 {% endblock %}

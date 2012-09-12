@@ -9,6 +9,8 @@ class Board(models.Model):
     title = models.CharField(max_length=255)
     origin = models.CharField(max_length=50)
     destination = models.CharField(max_length=50)
+    fromDate = models.DateField()
+    toDate = models.DateField()
 
     def __unicode__(self):
         return smart_unicode(self.title)
