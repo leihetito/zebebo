@@ -26,40 +26,19 @@
     </div>
    
     <div class="row-fluid" id="app">
-        <div id="stages"></div>
+        <div id="stages">
+        	<table border="1"></table>
+        	<p><a href="#" class="add">add</a></p>
+        </div>
     </div>
-    <div class="modal hide" id="story-form"></div>
-    <script type="text/template" id="StoryForm">
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal">×</a>
-            <h2>Modal header</h2>
-        </div>
-        <div class="modal-body">
-            <form action="#">
-                <label>Description</label>
-                <textarea name="description" id="description" cols="60" rows="5"></textarea>
-                <label>Color</label>
-                <select name="color" id="color">
-                    <option value="#b3ff20">Green</option>
-                    <option value="#ff5382">Pink</option>
-                    <option value="yellow">Yellow</option>
-                    <option value="#76e9ff">Blue</option>
-                    <option value="#ffb618">Orange</option>
-                </select>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <a href="javascript: void 0" class="btn save btn-primary">Save changes</a>        
-        </div>
-    </script>
-
+    
     <script type="text/template" id="BoardItemTemplate">
         <div class="title"><a href="/board/<%= item.id %>"><%= item.title %></a></div>
         <p class="description"><%= item.origin %> - <%= item.destination %></p>
+        <p class="description"><%= item.fromDate %> - <%= item.toDate %></p>
         <div>
         	<span class="editdelete"><a href="#" class="edit">edit</a> &middot; 
-        		                     <a href="#" class="delete">delete</a> &middot; 
-        		                     <a href="#" class="add">add</a>
+        		                     <a href="#" class="delete">delete</a> 
             </span>
         </div>
     </script>
@@ -72,10 +51,53 @@
 			</tr>
     </script>
 
-    <script type="text/template" id="StoryTemplate">
-        <a class="description" href="javascript: void 0" style="background-color:<%=color%>">
-            <%= description %>
-        </a>
+	<div class="modal hide" id="add_seg_form"></div>
+    <script type="text/template" id="TripSegmentAddRowTemplate">
+    	<div class="modal-header">
+            <a class="close" data-dismiss="modal">×</a>
+            <h2>Modal header</h2>
+        </div>
+    	<div class="modal-body">
+        <form>
+        	<fieldset>           
+            	<div class="clearfix">
+		        	<label for="origin">Origin</label>
+		            <div class="input">
+		                <input name="origin" type="text" class="span4" />
+                	</div>
+            	</div>
+            	<div class="clearfix">
+		        	<label for="destination">Destination</label>
+		            <div class="input">
+		                <input name="destination" type="text" class="span4" />
+                	</div>
+            	</div>
+            	<div class="clearfix">
+		        	<label for="from">From</label>
+		            <div class="input">
+		                <input id="add_from_date" name="add_from_date" type="text" class="span4" />
+                	</div>
+            	</div>
+            	<div class="clearfix">
+		        	<label for="to">To</label>
+		            <div class="input">
+		                <input id="add_to_date" name="add_to_date" type="text" class="span4" />
+                	</div>
+            	</div>
+            	<select name="transport" id="color">
+                    <option value="flight">Flight</option>
+                    <option value="taxi">Taxi</option>
+                    <option value="car">Car</option>
+                    <option value="train">Train</option>
+                    <option value="bus">Bus</option>
+                    <option value="foot">Foot</option>
+                </select>
+           </fieldset>
+           </form>
+		</div>
+		<div class="modal-footer">
+		    <button type="reset" class="btn cancel">Cancel</button> <button type="submit" class="btn primary save">Save Changes</button>
+		</div>
     </script>
 
 	
@@ -138,6 +160,12 @@
     			$(this).datepicker('destroy').datepicker({dateFormat: 'yy-mm-dd'}).focus();
         	});
         	$('#to_date').live('click', function() {
+    			$(this).datepicker('destroy').datepicker({dateFormat: 'yy-mm-dd'}).focus();
+        	});
+        	$('#add_from_date').live('click', function() {
+    			$(this).datepicker('destroy').datepicker({dateFormat: 'yy-mm-dd'}).focus();
+        	});
+        	$('#add_to_date').live('click', function() {
     			$(this).datepicker('destroy').datepicker({dateFormat: 'yy-mm-dd'}).focus();
         	});
 		});

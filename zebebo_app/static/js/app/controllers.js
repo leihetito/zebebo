@@ -12,12 +12,13 @@ var AppRouter = Backbone.Router.extend({
         var self = this;
         var _select_board = function () {
             $("#boarditem-" + id).addClass("active").siblings().removeClass("active")
-        }
+        };
         if (!this.boards_view) this.list();
         this.boards.on("reset", _select_board);
         _select_board();
         var segments = new TripSegmentSet();
-        this.tripsegmentset_view = new TripSegmentSetView({model:segments})
+        board = this.boards.get("/api/board/"+id+"/")
+        this.tripsegmentset_view = new TripSegmentSetView({model:segments},{board: board})
         segments.fetch({data:{board:id}})
     }
 })

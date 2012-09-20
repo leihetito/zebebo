@@ -1,5 +1,4 @@
 var TripSegmentItemView = Backbone.View.extend({
-    tagName : "div",
     template : _.template( $("#TripSegmentTemplate").html()),
     initialize : function () {
         this.model.bind('change', this.render, this)                                         
@@ -12,16 +11,48 @@ var TripSegmentItemView = Backbone.View.extend({
 
 var TripSegmentSetView = Backbone.View.extend({
     el : $("#stages"),
-    initialize : function () {
+    initialize : function (model, options) {
+        this.board = options["board"];
         this.model.bind('reset', this.render, this)
     },
+    events : {
+        "click .add" : "add_segment"
+    },
+    add_segment : function() {
+        $("#add_seg_form").html(_.template($("#TripSegmentAddRowTemplate").html()));
+        $("#add_seg_form").modal("show");
+
+        // save action
+        $("#add_seg_form")
+            .find(".save")
+            .click(_.bind(function () {
+               var data = {}
+               var form_data = $("#add_seg_form form").serializeArray();
+               for (var i in form_data) {
+                   data[form_data[i].name]=form_data[i].value;
+               }
+               var tripSegment = new TripSegment()
+               tripSegment.set(data)
+               tripSegment.set({
+                                   board: this.board.toJSON(),
+                                   order: this.model.length+1
+                          });
+               
+               console.log(tripSegment.toJSON())
+               tripSegment.save()
+               this.model.add(tripSegment);
+               $("#add_seg_form").modal("hide");
+               
+               this.render()
+           }, this))
+    },
     render : function () {
-        $(this.el).empty()
-        $(this.el).html("<table border=\"1\">")
+        console.log("here")
+        $(this.el).find("table").empty()
         _.each(this.model.models, function (segment) {
-            $(this.el).append(new TripSegmentItemView({model:segment}).render().el)
+            $(this.el).find("table").append(new TripSegmentItemView({model:segment}).render().el)
         }, this)
-        $(this.el).append("</table>")
+        
         return this;
     }
 })
@@ -33,7 +64,6 @@ var BoardItemView = Backbone.View.extend({
         "click a"       : "make_active",
         "click .edit"   : "edit",
         "click .delete" : "del",
-        "click .add"    : "add_leg"
     },
     initialize : function () {
         $(this.el).attr("id", "boarditem-" + this.model.get("id"))
@@ -55,10 +85,6 @@ var BoardItemView = Backbone.View.extend({
             $(this.el).remove();
             $(app.board_view.el).masonry('reload');
         }
-    },
-    add_leg: function(e) {
-        e.preventDefault();
-        
     },
     render : function () {
         $(this.el).html(this.template({"item" : this.model.toJSON()}))

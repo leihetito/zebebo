@@ -21,7 +21,7 @@ TRANSPORT_CHOICES = (
     ('car', 'Car'),
     ('train', 'Train'),
     ('bus', 'Bus'),
-    ('walk', 'Walk')
+    ('foot', 'Foot')
 )
 
 class TripSegment(models.Model):
