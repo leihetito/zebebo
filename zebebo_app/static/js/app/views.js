@@ -1,10 +1,25 @@
 var TripSegmentItemView = Backbone.View.extend({
+    tagName : "tr",
+    className: "row",
     template : _.template( $("#TripSegmentTemplate").html()),
     initialize : function () {
         this.model.bind('change', this.render, this)                                         
     },
+    events : {
+        "click .delete" : "delete_segment"
+    },
+    delete_segment : function(e) {
+        console.log("in delete")
+        e.preventDefault();
+        var del = confirm('Are you sure you want to delete this segment?');
+        if (del) {
+            //app.boards.remove(this.model);
+            this.model.destroy();
+            $(this.el).remove();
+        }
+    },
     render : function () {
-        $(this.el).append(this.template({"item" : this.model.toJSON()}))
+        $(this.el).html(this.template({"item" : this.model.toJSON()}))
         return this;
     }
 })
@@ -29,7 +44,12 @@ var TripSegmentSetView = Backbone.View.extend({
                var data = {}
                var form_data = $("#add_seg_form form").serializeArray();
                for (var i in form_data) {
-                   data[form_data[i].name]=form_data[i].value;
+                   if(form_data[i].name == "add_to_date")
+                       data["toDate"]=form_data[i].value;
+                   else if(form_data[i].name == "add_from_date")
+                       data["fromDate"]=form_data[i].value;
+                   else
+                       data[form_data[i].name]=form_data[i].value;
                }
                var tripSegment = new TripSegment()
                tripSegment.set(data)
@@ -44,15 +64,13 @@ var TripSegmentSetView = Backbone.View.extend({
                $("#add_seg_form").modal("hide");
                
                this.render()
-           }, this))
+           }, this))    
     },
     render : function () {
-        console.log("here")
-        $(this.el).find("table").empty()
+        this.$(".segmentTable").empty()
         _.each(this.model.models, function (segment) {
-            $(this.el).find("table").append(new TripSegmentItemView({model:segment}).render().el)
+            this.$(".segmentTable").append(new TripSegmentItemView({model:segment}).render().el)
         }, this)
-        
         return this;
     }
 })
@@ -78,12 +96,12 @@ var BoardItemView = Backbone.View.extend({
     },
     del: function(e) {
         e.preventDefault();
-        var del = confirm('Are you sure you want to delete this bookmark?');
+        var del = confirm('Are you sure you want to delete this trip?');
         if (del) {
             //app.boards.remove(this.model);
             this.model.destroy();
             $(this.el).remove();
-            $(app.board_view.el).masonry('reload');
+         //   $(app.board_view.el).masonry('reload');
         }
     },
     render : function () {
@@ -156,9 +174,11 @@ var EditView = Backbone.View.extend({
         var destination = this.$('input[name=destination]').val();
         var fromDate = this.$('input[name=from_date]').val();
         var toDate = this.$('input[name=to_date]').val();
+        var notes = this.$('input[name=notes]').val();
        
+       console.log("notes: " + notes)
         this.model.set({ title: title, origin: origin, destination: destination, 
-                         fromDate: fromDate, toDate: toDate });
+                         fromDate: fromDate, toDate: toDate, notes: notes });
         this.model.save();
 
         app.boards.fetch();

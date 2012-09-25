@@ -11,6 +11,7 @@ class Board(models.Model):
     destination = models.CharField(max_length=50)
     fromDate = models.DateField()
     toDate = models.DateField()
+    notes = models.TextField()
 
     def __unicode__(self):
         return smart_unicode(self.title)
@@ -30,6 +31,9 @@ class TripSegment(models.Model):
     origin = models.CharField(max_length=50)
     destination = models.CharField(max_length=50)
     transport = models.CharField(max_length=30, choices=TRANSPORT_CHOICES)
+    fromDate = models.DateField()
+    toDate = models.DateField()
+    notes = models.TextField()
     
     class Meta:
         ordering = ["order", ]

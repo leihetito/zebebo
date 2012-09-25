@@ -30,13 +30,25 @@
 </head>
 <body>
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-<div class="container-fluid">
-    <div class="row-fluid" id="header">
-        <div class="span12" id="top-bar">
-            <a href="/" id="logo"><h1><span>Zebebo</span></h1></a>
-            {% block top %}{% endblock %}
-        </div>
+
+<div class="navbar">
+    <div class="navbar-inner">
+	    <a class="brand" href="#">Zebebo</a>
+    	<ul class="nav">
+    		<li class="active"><a href="#">Home</a></li>
+    		<li><a href="#">Username</a></li>
+    	</ul>
+    	
+    	<form class="form-inline">
+    		<input type="text" class="input-small" placeholder="Email">
+    		<input type="password" class="input-small" placeholder="Password">
+    		<label class="checkbox">
+    		<input type="checkbox"> Remember me
+    		</label>
+    		<button type="submit" class="btn">Sign in</button>
+    	</form>
     </div>
+</div>
 
 {% block content %}{% endblock %}
 </div>

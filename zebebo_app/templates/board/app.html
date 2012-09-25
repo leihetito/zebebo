@@ -25,13 +25,13 @@
          <ul class="nav nav-tabs"></ul>
     </div>
    
-    <div class="row-fluid" id="app">
-        <div id="stages">
-        	<table border="1"></table>
-        	<p><a href="#" class="add">add</a></p>
-        </div>
+    <div id="stages">
+    	<!--<div id="segmentTable" class="segmentTable"></div>-->
+    	<table id="segmentTable" class="segmentTable" cellpadding="4"></table>
+    	<p><a href="#" class="add">add</a></p>
+    	</div>
     </div>
-    
+
     <script type="text/template" id="BoardItemTemplate">
         <div class="title"><a href="/board/<%= item.id %>"><%= item.title %></a></div>
         <p class="description"><%= item.origin %> - <%= item.destination %></p>
@@ -41,14 +41,18 @@
         		                     <a href="#" class="delete">delete</a> 
             </span>
         </div>
+        <p class="description"><%= item.notes %></p>
     </script>
 
-    <script type="text/template" id="TripSegmentTemplate">    
-			<tr>
-				<td><%= item.origin %></td>
-				<td><%= item.destination %></td>
-				<td><%= item.transport %></td>
-			</tr>
+    <script type="text/template" id="TripSegmentTemplate">  
+    	    <td class="span1"><%= item.id %></td>
+			<td class="span4"><%= item.origin %></td>
+			<td class="span4"><%= item.destination %></td>
+			<td class="span4"><%= item.transport %></td>
+			<td class="span2"><a class="btn btn-danger delete" href="#">Delete</a></td>
+			<td class="span2"><a class="btn btn-primary edit" href="#">Edit</a></td>
+		</div>
+		
     </script>
 
 	<div class="modal hide" id="add_seg_form"></div>
@@ -83,7 +87,7 @@
 		            <div class="input">
 		                <input id="add_to_date" name="add_to_date" type="text" class="span4" />
                 	</div>
-            	</div>
+            	</div>            	
             	<select name="transport" id="color">
                     <option value="flight">Flight</option>
                     <option value="taxi">Taxi</option>
@@ -91,7 +95,13 @@
                     <option value="train">Train</option>
                     <option value="bus">Bus</option>
                     <option value="foot">Foot</option>
-                </select>
+                </select>   
+                <div class="clearfix">
+		        	<label for="notes">Notes</label>
+		            <div class="input">
+		                <input id="notes" name="notes" type="text" class="span4" />
+                	</div>
+            	</div>                
            </fieldset>
            </form>
 		</div>
@@ -140,11 +150,16 @@
 		            </div><!-- /clearfix -->
 		            
 		            <div class="clearfix">
-		                <label for="fromdate">To</label>
+		                <label for="todate">To</label>
 		                <div class="input">
 		                    <input id="to_date" name="to_date" type="text" class="span6" />
 		                </div>
 		            </div><!-- /clearfix -->
+		            <div class="clearfix">
+		        		<label for="notes">Notes</label>
+		               	<input rows="2" cols="20" id="notes" name="notes" type="text" class="span4" />
+                	</div>
+            	</div>
 		        </fieldset>
 		    </form>
 		</div>
