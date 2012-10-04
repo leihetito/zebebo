@@ -16,6 +16,7 @@ var AppRouter = Backbone.Router.extend({
         if (!this.boards_view) this.list();
         this.boards.on("reset", _select_board);
         _select_board();
+        
         var segments = new TripSegmentSet();
         board = this.boards.get("/api/board/"+id+"/")
         this.tripsegmentset_view = new TripSegmentSetView({model:segments},{board: board})

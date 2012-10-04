@@ -27,7 +27,7 @@
    
     <div id="stages">
     	<!--<div id="segmentTable" class="segmentTable"></div>-->
-    	<table id="segmentTable" class="segmentTable" cellpadding="4"></table>
+    	<table id="segmentTable" class="segmentTable table table-striped" cellpadding="4"></table>
     	<p><a href="#" class="add">add</a></p>
     	</div>
     </div>
@@ -45,12 +45,25 @@
     </script>
 
     <script type="text/template" id="TripSegmentTemplate">  
-    	    <td class="span1"><%= item.id %></td>
+    	    <td class="span1"><%= item.order %></td>
 			<td class="span4"><%= item.origin %></td>
 			<td class="span4"><%= item.destination %></td>
-			<td class="span4"><%= item.transport %></td>
-			<td class="span2"><a class="btn btn-danger delete" href="#">Delete</a></td>
-			<td class="span2"><a class="btn btn-primary edit" href="#">Edit</a></td>
+			<td class="span4"><%= item.transport %></td>	
+			<td class="span4"><%= item.notes %></td>		
+			<td class="span1 editsection">
+				<a class="btn btn-warning btn-small moveup" href="#">
+					<i class="icon-arrow-up"></i>
+				</a>
+				<a class="btn btn-warning btn-small movedown" href="#">
+					<i class="icon-arrow-down"></i>
+				</a>
+			</td>
+			<td class="span1 editsection">
+				<a class="btn btn-success btn-small edit" href="#"><i class="icon-edit"></i></a>
+			</td>
+			<td class="span1 editsection">
+				<a class="btn btn-danger btn-small delete" href="#"><i class="icon-remove"></i></a>
+			</td>
 		</div>
 		
     </script>

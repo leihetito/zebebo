@@ -1,12 +1,13 @@
 var TripSegmentItemView = Backbone.View.extend({
     tagName : "tr",
     className: "row",
+    
     template : _.template( $("#TripSegmentTemplate").html()),
     initialize : function () {
         this.model.bind('change', this.render, this)                                         
     },
     events : {
-        "click .delete" : "delete_segment"
+        "click .delete" : "delete_segment"      
     },
     delete_segment : function(e) {
         console.log("in delete")
@@ -19,19 +20,28 @@ var TripSegmentItemView = Backbone.View.extend({
         }
     },
     render : function () {
-        $(this.el).html(this.template({"item" : this.model.toJSON()}))
+        this.el.id = 'v' + this.model.get('order');
+
+        $(this.el).html(this.template({"item" : this.model.toJSON()})).addClass("segment")
         return this;
     }
 })
 
 var TripSegmentSetView = Backbone.View.extend({
     el : $("#stages"),
+    rowid_clicked: null,
+    
     initialize : function (model, options) {
         this.board = options["board"];
-        this.model.bind('reset', this.render, this)
+        this.model.bind('reset', this.render, this);
+        this.model.bind("add", this.reorder, this);
+        this.model.bind("remove", this.reorder, this);
     },
     events : {
-        "click .add" : "add_segment"
+        "click .add"            : "add_segment",
+        "click .table tbody tr" : "row_clicked",
+        "click .moveup"         : "row_up",
+        "click .movedown"         : "row_down",
     },
     add_segment : function() {
         $("#add_seg_form").html(_.template($("#TripSegmentAddRowTemplate").html()));
@@ -60,14 +70,46 @@ var TripSegmentSetView = Backbone.View.extend({
                
                console.log(tripSegment.toJSON())
                tripSegment.save()
-               this.model.add(tripSegment);
                $("#add_seg_form").modal("hide");
                
-               this.render()
+               this.model.fetch()
            }, this))    
     },
+    row_clicked : function(ev) {
+      if(!$(ev.target).is("TD"))
+          return;
+      
+      console.log($(ev.target).parent().attr("id"))
+      this.rowid_clicked = $(ev.target).parent().attr("id");
+      row = $(ev.target).parent();
+      row.addClass("rowselected").siblings().removeClass("rowselected");
+      row.siblings().find(".editsection").hide()
+      row.find(".editsection").show();
+    },
+    row_up: function() {
+      console.log( "on row " + this.rowid_clicked)  
+    },
+    row_down: function() {
+      console.log( "on row " + this.rowid_clicked)  
+    },
+    reorder: function() {
+        console.log("in reorder") 
+        
+        var i = 1;
+        _.each(this.model.models, function (segment) {
+            segment.set({"order" : i++});
+            segment.save()
+        }) 
+    },
     render : function () {
+        console.log("in render")
+
         this.$(".segmentTable").empty()
+        
+        // sort the collection by model.order
+        _.sortBy(this.model.models, function(segment) {
+            return segment.get("order")
+        })
         _.each(this.model.models, function (segment) {
             this.$(".segmentTable").append(new TripSegmentItemView({model:segment}).render().el)
         }, this)

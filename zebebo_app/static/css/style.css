@@ -32,6 +32,9 @@ h3 {
 
 }
 
+.table-striped tbody tr.rowselected td { 
+	background-color: #ffcc99; 
+}
 
 .stage {
     margin-top: 10px;
