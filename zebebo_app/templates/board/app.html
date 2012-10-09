@@ -47,10 +47,12 @@
     <script type="text/template" id="TripSegmentTemplate">  
     	    <td class="span1"><%= item.order %></td>
 			<td class="span4"><%= item.origin %></td>
-			<td class="span4"><%= item.destination %></td>
+			<td class="span4"><%= item.destination %></td>		
+			<td class="span4"><%= item.fromDate %></td>
+			<td class="span4"><%= item.toDate %></td>
 			<td class="span4"><%= item.transport %></td>	
-			<td class="span4"><%= item.notes %></td>		
-			<td class="span1 editsection">
+			<td class="span4"><%= item.notes %></td>
+			<td class="span1 editsection" style="display: none">
 				<a class="btn btn-warning btn-small moveup" href="#">
 					<i class="icon-arrow-up"></i>
 				</a>
@@ -58,10 +60,10 @@
 					<i class="icon-arrow-down"></i>
 				</a>
 			</td>
-			<td class="span1 editsection">
+			<td class="span1 editsection" style="display: none">
 				<a class="btn btn-success btn-small edit" href="#"><i class="icon-edit"></i></a>
 			</td>
-			<td class="span1 editsection">
+			<td class="span1 editsection" style="display: none">
 				<a class="btn btn-danger btn-small delete" href="#"><i class="icon-remove"></i></a>
 			</td>
 		</div>
@@ -72,7 +74,7 @@
     <script type="text/template" id="TripSegmentAddRowTemplate">
     	<div class="modal-header">
             <a class="close" data-dismiss="modal">×</a>
-            <h2>Modal header</h2>
+            <h2>Add a trip segment</h2>
         </div>
     	<div class="modal-body">
         <form>
@@ -170,7 +172,7 @@
 		            </div><!-- /clearfix -->
 		            <div class="clearfix">
 		        		<label for="notes">Notes</label>
-		               	<input rows="2" cols="20" id="notes" name="notes" type="text" class="span4" />
+		               	<input id="notes" name="notes" type="text" class="span4" />
                 	</div>
             	</div>
 		        </fieldset>

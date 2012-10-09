@@ -20,7 +20,7 @@ var TripSegmentItemView = Backbone.View.extend({
         }
     },
     render : function () {
-        this.el.id = 'v' + this.model.get('order');
+        this.el.id = this.model.get('order');
 
         $(this.el).html(this.template({"item" : this.model.toJSON()})).addClass("segment")
         return this;
@@ -41,7 +41,7 @@ var TripSegmentSetView = Backbone.View.extend({
         "click .add"            : "add_segment",
         "click .table tbody tr" : "row_clicked",
         "click .moveup"         : "row_up",
-        "click .movedown"         : "row_down",
+        "click .movedown"       : "row_down",
     },
     add_segment : function() {
         $("#add_seg_form").html(_.template($("#TripSegmentAddRowTemplate").html()));
@@ -79,7 +79,6 @@ var TripSegmentSetView = Backbone.View.extend({
       if(!$(ev.target).is("TD"))
           return;
       
-      console.log($(ev.target).parent().attr("id"))
       this.rowid_clicked = $(ev.target).parent().attr("id");
       row = $(ev.target).parent();
       row.addClass("rowselected").siblings().removeClass("rowselected");
@@ -87,10 +86,50 @@ var TripSegmentSetView = Backbone.View.extend({
       row.find(".editsection").show();
     },
     row_up: function() {
-      console.log( "on row " + this.rowid_clicked)  
+      console.log( "on row up " + this.rowid_clicked)  
+      row_id = this.rowid_clicked;
+      
+      //row_id start from 1, arr index start from 0
+      if(row_id > 1) {
+          prev = this.model.models[row_id-2];
+          prev_order = prev.get("order");
+          curr = this.model.models[row_id-1];
+          curr_order = curr.get("order");
+          
+          curr.set({
+              order: prev_order 
+          })
+          prev.set({
+              order: curr_order 
+          })
+          curr.save()
+          prev.save()
+          
+          this.model.fetch()
+      }
     },
     row_down: function() {
-      console.log( "on row " + this.rowid_clicked)  
+      console.log( "on row down " + this.rowid_clicked)  
+      row_id = this.rowid_clicked;
+      
+      //row_id start from 1, arr index start from 0
+      if(row_id < this.model.length ) {
+          next = this.model.models[row_id];
+          next_order = next.get("order");
+          curr = this.model.models[row_id-1];
+          curr_order = curr.get("order");
+
+          curr.set({
+              order: next_order 
+          })
+          next.set({
+              order: curr_order 
+          })
+          curr.save()
+          next.save()
+          
+          this.model.fetch()
+      }
     },
     reorder: function() {
         console.log("in reorder") 
@@ -191,7 +230,6 @@ var EditView = Backbone.View.extend({
     },
 
     render: function() {
-        //$(this.el).html(this.model.toJSON());
         $(this.el).empty();
         $(this.el).append(this.template({"item" : this.model.toJSON()}))
         $(this.el).modal({
