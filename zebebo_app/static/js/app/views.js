@@ -44,7 +44,7 @@ var TripSegmentSetView = Backbone.View.extend({
         "click .movedown"       : "row_down",
     },
     add_segment : function() {
-        $("#add_seg_form").html(_.template($("#TripSegmentAddRowTemplate").html()));
+        $("#add_seg_form").html(_.template($("#TripSegmentEditTemplate").html()));
         $("#add_seg_form").modal("show");
 
         // save action
@@ -173,7 +173,7 @@ var BoardItemView = Backbone.View.extend({
     },
     edit: function(e) {
         e.preventDefault();
-        new EditView({ model: this.model }).render();
+        new EditTripView({ model: this.model }).render();
     },
     del: function(e) {
         e.preventDefault();
@@ -198,7 +198,7 @@ var BoardSetView = Backbone.View.extend({
     },
     new_board: function(e) {
         e.preventDefault();
-        new EditView({ model: new Board() }).render();        
+        new EditTripView({ model: new Board() }).render();        
     },
     initialize : function () {
         this.boarditem_views = []
@@ -214,9 +214,9 @@ var BoardSetView = Backbone.View.extend({
     }
 })
 
-var EditView = Backbone.View.extend({
+var EditTripView = Backbone.View.extend({
     
-    template : _.template($("#ModalTemplate").html()),
+    template : _.template($("#TripEditTemplate").html()),
     el: $("#modal"),
     
     events: {
@@ -254,7 +254,7 @@ var EditView = Backbone.View.extend({
         var destination = this.$('input[name=destination]').val();
         var fromDate = this.$('input[name=from_date]').val();
         var toDate = this.$('input[name=to_date]').val();
-        var notes = this.$('input[name=notes]').val();
+        var notes = this.$('textarea[name=notes]').val();
        
        console.log("notes: " + notes)
         this.model.set({ title: title, origin: origin, destination: destination, 

@@ -26,12 +26,11 @@
     </div>
    
     <div id="stages">
-    	<!--<div id="segmentTable" class="segmentTable"></div>-->
     	<table id="segmentTable" class="segmentTable table table-striped" cellpadding="4"></table>
     	<p><a href="#" class="add">add</a></p>
     	</div>
     </div>
-
+    
     <script type="text/template" id="BoardItemTemplate">
         <div class="title"><a href="/board/<%= item.id %>"><%= item.title %></a></div>
         <p class="description"><%= item.origin %> - <%= item.destination %></p>
@@ -66,123 +65,132 @@
 			<td class="span1 editsection" style="display: none">
 				<a class="btn btn-danger btn-small delete" href="#"><i class="icon-remove"></i></a>
 			</td>
-		</div>
-		
+		</div>	
     </script>
 
-	<div class="modal hide" id="add_seg_form"></div>
-    <script type="text/template" id="TripSegmentAddRowTemplate">
+	<div class="modal hide fade" id="add_seg_form"></div>
+    <script type="text/template" id="TripSegmentEditTemplate">
     	<div class="modal-header">
-            <a class="close" data-dismiss="modal">×</a>
-            <h2>Add a trip segment</h2>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Add a trip segment</h3>
         </div>
+        <br>
     	<div class="modal-body">
-        <form>
+        <form class="form-horizontal">
         	<fieldset>           
-            	<div class="clearfix">
-		        	<label for="origin">Origin</label>
-		            <div class="input">
-		                <input name="origin" type="text" class="span4" />
+            	<div class="control-group">
+		        	<label class="control-label" for="origin">Origin</label>
+		            <div class="controls">
+		                <input id="s-origin" name="origin" placeholder="Type in an place" type="text" />
                 	</div>
             	</div>
-            	<div class="clearfix">
-		        	<label for="destination">Destination</label>
-		            <div class="input">
-		                <input name="destination" type="text" class="span4" />
+            	<div class="control-group">
+		        	<label class="control-label" for="destination">Destination</label>
+		            <div class="controls">
+		                <input id="s-origin" name="destination" placeholder="Type in an place" type="text" />
                 	</div>
             	</div>
-            	<div class="clearfix">
-		        	<label for="from">From</label>
-		            <div class="input">
-		                <input id="add_from_date" name="add_from_date" type="text" class="span4" />
+            	<div class="control-group">
+		        	<label class="control-label" for="from">From</label>
+		            <div class="controls">
+		                <input id="add_from_date" name="add_from_date" type="text" />
                 	</div>
             	</div>
-            	<div class="clearfix">
-		        	<label for="to">To</label>
-		            <div class="input">
-		                <input id="add_to_date" name="add_to_date" type="text" class="span4" />
+            	<div class="control-group">
+		        	<label class="control-label" for="to">To</label>
+		            <div class="controls">
+		                <input id="add_to_date" name="add_to_date" type="text" />
                 	</div>
-            	</div>            	
-            	<select name="transport" id="color">
-                    <option value="flight">Flight</option>
-                    <option value="taxi">Taxi</option>
-                    <option value="car">Car</option>
-                    <option value="train">Train</option>
-                    <option value="bus">Bus</option>
-                    <option value="foot">Foot</option>
-                </select>   
-                <div class="clearfix">
-		        	<label for="notes">Notes</label>
-		            <div class="input">
-		                <input id="notes" name="notes" type="text" class="span4" />
+            	</div>      
+            	<div class="control-group">
+		        	<label class="control-label" for="tranport">Transport</label>
+		            <div class="controls">      	
+            			<select name="transport" id="color">
+                 		   <option value="flight">Flight</option>
+               			   <option value="taxi">Taxi</option>
+               		       <option value="car">Car</option>
+                           <option value="train">Train</option>
+                           <option value="bus">Bus</option>
+                           <option value="foot">Foot</option>
+                        </select>   
+                    </div>
+            	</div>  
+                <div class="control-group">
+		        	<label class="control-label" for="notes">Notes</label>
+		            <div class="controls">
+		                <textarea id="notes" name="notes" />
                 	</div>
             	</div>                
            </fieldset>
            </form>
 		</div>
 		<div class="modal-footer">
-		    <button type="reset" class="btn cancel">Cancel</button> <button type="submit" class="btn primary save">Save Changes</button>
+		    <button type="reset" class="btn cancel">Cancel</button> 
+		    <button type="submit" class="btn primary save">Save Changes</button>
 		</div>
     </script>
 
 	
 
-	<script type="text/template" id="ModalTemplate">
+	<script type="text/template" id="TripEditTemplate">
 		<div class="modal-header">
-    		<a href="#" class="close">&times;</a>
+    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     		<h3>Edit Trip</h3>
 		</div>
+		<br>
 		<div class="modal-body">
-    		<form>
-        		<fieldset>           
-        
-            		<div class="clearfix">
-		                <label for="title">Title</label>
-		                <div class="input">
-		                    <input name="title" type="text" class="span6" value="<%= item.title %>" />
+    		<form class="form-horizontal">
+        		<fieldset>          
+            		<div class="control-group">
+		                <label class="control-label" for="title">Title</label>
+		                <div class="controls">
+		                    <input name="title" type="text" value="<%= item.title %>" />
                 		</div>
-            		</div><!-- /clearfix -->
+            		</div>
             
-		            <div class="clearfix">
-		                <label for="origin">Origin</label>
-		                <div class="input">
-		                    <input name="origin" type="text" class="span6" />
+		            <div class="control-group">
+		                <label class="control-label" for="origin">Origin</label>
+		                <div class="controls">
+		                    <input id="t-origin" name="origin" placeholder="Type in an place" type="text" />
 		                </div>
-		            </div><!-- /clearfix -->
+		            </div>
 		            
-		            <div class="clearfix">
-		                <label for="destination">Destination</label>
-		                <div class="input">
-		                    <input name="destination" type="text" class="span6" />
+		            <div class="control-group">
+		                <label class="control-label" for="destination">Destination</label>
+		                <div class="controls">
+		                    <input id="t-destination" name="destination" placeholder="Type in an place" type="text" />
 		                </div>
-		            </div><!-- /clearfix -->   
+		            </div>
 
-					<div class="clearfix">
-		                <label for="fromdate">From</label>
-		                <div class="input">
-		                    <input id="from_date" name="from_date" type="text" class="span6" />
+					<div class="control-group">
+		                <label class="control-label" for="fromdate">From</label>
+		                <div class="controls">
+		                    <input id="from_date" name="from_date" type="text" />
 		                </div>
-		            </div><!-- /clearfix -->
+		            </div>
 		            
-		            <div class="clearfix">
-		                <label for="todate">To</label>
-		                <div class="input">
-		                    <input id="to_date" name="to_date" type="text" class="span6" />
+		            <div class="control-group">
+		                <label class="control-label" for="todate">To</label>
+		                <div class="controls">
+		                    <input id="to_date" name="to_date" type="text" />
 		                </div>
-		            </div><!-- /clearfix -->
-		            <div class="clearfix">
-		        		<label for="notes">Notes</label>
-		               	<input id="notes" name="notes" type="text" class="span4" />
+		            </div>
+		            <div class="control-group">
+		        		<label class="control-label" for="notes">Notes</label>
+		        		<div class="controls">
+		               		<textarea id="notes" name="notes" />
+		                </div>
                 	</div>
             	</div>
 		        </fieldset>
 		    </form>
 		</div>
 		<div class="modal-footer">
-		    <button type="reset" class="btn cancel">Cancel</button> <button type="submit" class="btn primary save">Save Changes</button>
+		    <button type="reset" class="btn cancel">Cancel</button> 
+		    <button type="submit" class="btn primary save">Save Changes</button>
 		</div>
 	</script>
-	<div class="modal" id="modal"></div>
+	<div class="modal hide fade" id="modal"></div>
 	
 	<script>
 		$(document).ready(function() {
@@ -198,6 +206,24 @@
         	$('#add_to_date').live('click', function() {
     			$(this).datepicker('destroy').datepicker({dateFormat: 'yy-mm-dd'}).focus();
         	});
+        	
+        	options = {
+        		geocoder_type: 'airport,locality,political,sublocality,neighborhood,country',
+        	};
+        	
+        	$('#t-origin').live('focus', function() {
+    			$(this).geo_autocomplete(options);
+        	});
+        	$('#t-destination').live('focus', function() {
+    			$(this).geo_autocomplete(options);
+        	});
+        	$('#s-origin').live('focus', function() {
+    			$(this).geo_autocomplete(options);
+        	});
+        	$('#s-destination').live('focus', function() {
+    			$(this).geo_autocomplete(options);
+        	});
+        	
 		});
 
 	</script>
