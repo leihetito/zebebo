@@ -1,3 +1,27 @@
+var SegmentNotesView = Backbone.View.extend({
+    el : $("#tripsegmentnotes"),
+    template : _.template($("#SegmentNotesTemplate").html()),
+   
+    initialize : function () {
+        this.model.bind('change', this.render, this)     
+    },
+    events : {
+        "click .save" : "save_segment_notes"      
+    },
+    save_segment_notes : function() {
+        var notes = this.$('textarea[name=segment_notes]').val();
+       
+        console.log(this.model.get("order") + " saving notes: " + notes)
+        this.model.set({ notes: notes });
+        this.model.save();
+    },
+    render : function () {
+        console.log("in trip segment render")
+        $(this.el).html(this.template({"item" : this.model.toJSON()}))
+        return this;
+    }
+})
+
 var TripSegmentItemView = Backbone.View.extend({
     tagName : "tr",
     className: "row",
@@ -22,6 +46,7 @@ var TripSegmentItemView = Backbone.View.extend({
     render : function () {
         this.el.id = this.model.get('order');
 
+        //render trip segment table
         $(this.el).html(this.template({"item" : this.model.toJSON()})).addClass("segment")
         return this;
     }
@@ -30,6 +55,7 @@ var TripSegmentItemView = Backbone.View.extend({
 var TripSegmentSetView = Backbone.View.extend({
     el : $("#stages"),
     rowid_clicked: null,
+    notesView: null,
     
     initialize : function (model, options) {
         this.board = options["board"];
@@ -84,11 +110,21 @@ var TripSegmentSetView = Backbone.View.extend({
       row.addClass("rowselected").siblings().removeClass("rowselected");
       row.siblings().find(".editsection").hide()
       row.find(".editsection").show();
+      
+      segment = this.model.models[this.rowid_clicked-1]
+      
+      //unbind events of existing notes view so they dont fire on save
+      if(this.notesView != null)
+          this.notesView.undelegateEvents();
+        
+      this.notesView = new SegmentNotesView({model: segment})
+      //render trip segmenet notes in a separate widget
+      this.$("#tripsegmentnotes").append(this.notesView.render().el)
     },
     row_up: function() {
       console.log( "on row up " + this.rowid_clicked)  
       row_id = this.rowid_clicked;
-      
+
       //row_id start from 1, arr index start from 0
       if(row_id > 1) {
           prev = this.model.models[row_id-2];
@@ -105,7 +141,7 @@ var TripSegmentSetView = Backbone.View.extend({
           curr.save()
           prev.save()
           
-          this.model.fetch()
+          this.model.fetch({data:{board:this.board.get('id')}})
       }
     },
     row_down: function() {
@@ -128,7 +164,7 @@ var TripSegmentSetView = Backbone.View.extend({
           curr.save()
           next.save()
           
-          this.model.fetch()
+          this.model.fetch({data:{board:this.board.get('id')}})
       }
     },
     reorder: function() {
@@ -141,8 +177,12 @@ var TripSegmentSetView = Backbone.View.extend({
         }) 
     },
     render : function () {
-        console.log("in render")
+        console.log("in render, size of model "+this.model.length)
 
+        if(this.model.length == 0) {
+            this.$("#tripsegmentnotes").hide();
+        }
+        
         this.$(".segmentTable").empty()
         
         // sort the collection by model.order
@@ -179,10 +219,8 @@ var BoardItemView = Backbone.View.extend({
         e.preventDefault();
         var del = confirm('Are you sure you want to delete this trip?');
         if (del) {
-            //app.boards.remove(this.model);
             this.model.destroy();
             $(this.el).remove();
-         //   $(app.board_view.el).masonry('reload');
         }
     },
     render : function () {
@@ -256,7 +294,6 @@ var EditTripView = Backbone.View.extend({
         var toDate = this.$('input[name=to_date]').val();
         var notes = this.$('textarea[name=notes]').val();
        
-       console.log("notes: " + notes)
         this.model.set({ title: title, origin: origin, destination: destination, 
                          fromDate: fromDate, toDate: toDate, notes: notes });
         this.model.save();

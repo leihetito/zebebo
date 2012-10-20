@@ -36,6 +36,16 @@ h3 {
 	background-color: #ffcc99; 
 }
 
+textarea {
+    width: 80%;
+    height: 10em;
+    border-radius: 1em;
+    border: 1px solid #000; /* everything up to and including this line
+                               are aesthetics, adjust to taste */
+    outline: none; /* removes the default outline */
+    resize: none; /* prevents the user-resizing, adjust to taste */
+}
+
 .stage {
     margin-top: 10px;
     /*padding: 5px 20px 20px 20px;*/

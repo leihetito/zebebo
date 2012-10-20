@@ -13,13 +13,22 @@ var AppRouter = Backbone.Router.extend({
         var _select_board = function () {
             $("#boarditem-" + id).addClass("active").siblings().removeClass("active")
         };
-        if (!this.boards_view) this.list();
+        if (!this.boards_view) {
+            console.log("no boards_view, calling list")
+            this.list();
+        }
         this.boards.on("reset", _select_board);
         _select_board();
+        
+        console.log("constructing segments for board "+id);
         
         var segments = new TripSegmentSet();
         board = this.boards.get("/api/board/"+id+"/")
         this.tripsegmentset_view = new TripSegmentSetView({model:segments},{board: board})
         segments.fetch({data:{board:id}})
+        
+        //hide the trip notes section 
+        console.log("empty notes section")
+        $("#tripsegmentnotes").empty();
     }
 })

@@ -31,6 +31,14 @@
     	</div>
     </div>
     
+    <div id="tripsegmentnotes"></div>
+    <script type="text/template" id="SegmentNotesTemplate">
+    	<form class="form-horizontal">
+      		<textarea id="segment_notes" name="segment_notes"><%= item.notes %></textarea>
+    	    <button type="submit" class="btn primary save">Save</button>
+        </form>
+    </script>
+    
     <script type="text/template" id="BoardItemTemplate">
         <div class="title"><a href="/board/<%= item.id %>"><%= item.title %></a></div>
         <p class="description"><%= item.origin %> - <%= item.destination %></p>
@@ -51,18 +59,18 @@
 			<td class="span4"><%= item.toDate %></td>
 			<td class="span4"><%= item.transport %></td>	
 			<td class="span4"><%= item.notes %></td>
-			<td class="span1 editsection" style="display: none">
-				<a class="btn btn-warning btn-small moveup" href="#">
+			<td class="editsection" style="display: none">
+				<a class="btn btn-warning btn-small moveup" href="/board/<%= item.board.id %>">
 					<i class="icon-arrow-up"></i>
 				</a>
-				<a class="btn btn-warning btn-small movedown" href="#">
+				<a class="btn btn-warning btn-small movedown" href="/board/<%= item.board.id %>">
 					<i class="icon-arrow-down"></i>
 				</a>
 			</td>
-			<td class="span1 editsection" style="display: none">
+			<td class="editsection" style="display: none">
 				<a class="btn btn-success btn-small edit" href="#"><i class="icon-edit"></i></a>
 			</td>
-			<td class="span1 editsection" style="display: none">
+			<td class="editsection" style="display: none">
 				<a class="btn btn-danger btn-small delete" href="#"><i class="icon-remove"></i></a>
 			</td>
 		</div>	
@@ -222,10 +230,8 @@
         	});
         	$('#s-destination').live('focus', function() {
     			$(this).geo_autocomplete(options);
-        	});
-        	
-		});
-
+        	}); 	
+ 	});
 	</script>
       
 {% endblock %}

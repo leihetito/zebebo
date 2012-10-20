@@ -33,7 +33,7 @@ class TripSegment(models.Model):
     transport = models.CharField(max_length=30, choices=TRANSPORT_CHOICES)
     fromDate = models.DateField()
     toDate = models.DateField()
-    notes = models.TextField()
+    notes = models.TextField(blank=True)
     
     class Meta:
         ordering = ["order", ]
