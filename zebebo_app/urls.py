@@ -6,8 +6,7 @@ urlpatterns = patterns('',
     # zebebo_app urls
     url(r'^', include('board.urls')),
 
-    # auth
-    # url(r'^auth/', include('auth.urls')),
+    url(r'^social/', include('socialregistration.urls', namespace = 'socialregistration')),
 
     # admin
     url(r'^admin/', include(admin.site.urls)),

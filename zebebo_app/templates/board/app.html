@@ -19,10 +19,18 @@
 {% endblock %}
 
 {% block content %}    
-    <div id="select-board">
+	<div id="logindiv"></div>
+    <script type="text/template" id="LoginTemplate">
+    	<form class="form-horizontal">
+      		
+    	    <button type="submit" class="btn primary save">Login</button>
+        </form>
+    </script>
+    
+    <div id="trip-container" class="container-fluid">
         <a style="float:right; margin-top:4px; margin-bottom:3px;" class="btn new" 
         href="#">Add Trip</a>
-         <ul class="nav nav-tabs"></ul>
+        <div id="trip-board"></div>
     </div>
    
     <div id="stages">
@@ -40,15 +48,17 @@
     </script>
     
     <script type="text/template" id="BoardItemTemplate">
-        <div class="title"><a href="/board/<%= item.id %>"><%= item.title %></a></div>
-        <p class="description"><%= item.origin %> - <%= item.destination %></p>
-        <p class="description"><%= item.fromDate %> - <%= item.toDate %></p>
-        <div>
-        	<span class="editdelete"><a href="#" class="edit">edit</a> &middot; 
-        		                     <a href="#" class="delete">delete</a> 
-            </span>
+        <div class="title" align="center">
+        	<a href="/board/<%= item.id %>"><%= item.title %></a></div>
+        	<p class="description" align="center"><%= item.origin %> - <%= item.destination %></p>
+        	<p class="description" align="center"><%= item.fromDate %> - <%= item.toDate %></p>
+        
+        	<div class="editdelete" align="center">
+        		<a href="#" class="edit">edit</a> &middot; 
+        		<a href="#" class="delete">delete</a> 
+            </div>
         </div>
-        <p class="description"><%= item.notes %></p>
+        <p class="description" align="center"><%= item.notes %></p>
     </script>
 
     <script type="text/template" id="TripSegmentTemplate">  

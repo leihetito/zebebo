@@ -1,6 +1,7 @@
 var AppRouter = Backbone.Router.extend({
     routes : {
         "" : "list",
+        "login" : "login",
         "board/:id" : "board"
     },
     list : function () {
@@ -30,5 +31,8 @@ var AppRouter = Backbone.Router.extend({
         //hide the trip notes section 
         console.log("empty notes section")
         $("#tripsegmentnotes").empty();
+    },
+    login: function() {
+        this.loginView = new LoginView()
     }
 })

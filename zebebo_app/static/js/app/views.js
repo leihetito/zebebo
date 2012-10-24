@@ -197,7 +197,7 @@ var TripSegmentSetView = Backbone.View.extend({
 })
 
 var BoardItemView = Backbone.View.extend({
-    tagName : "li" ,
+    className: "span4",
     template : _.template($("#BoardItemTemplate").html()),
     events : {
         "click a"       : "make_active",
@@ -208,8 +208,8 @@ var BoardItemView = Backbone.View.extend({
         $(this.el).attr("id", "boarditem-" + this.model.get("id"))
     },
     make_active : function () {
-        $(this.el).siblings().removeClass("active")
-        $(this.el).addClass("active");
+        $(this.el).siblings().removeClass("activebox").addClass("box")
+        $(this.el).removeClass("box").addClass("activebox");
     },
     edit: function(e) {
         e.preventDefault();
@@ -224,13 +224,13 @@ var BoardItemView = Backbone.View.extend({
         }
     },
     render : function () {
-        $(this.el).html(this.template({"item" : this.model.toJSON()}))
+        $(this.el).html(this.template({"item" : this.model.toJSON()})).addClass("box")
         return this;
     }
 })
 
 var BoardSetView = Backbone.View.extend({
-    el : $("#select-board"),
+    el : $("#trip-container"),
     events : {
         "click .new" : "new_board"
     },
@@ -244,9 +244,10 @@ var BoardSetView = Backbone.View.extend({
         this.model.bind("add", this.render, this);
     },
     render : function () {
-        $(this.el).find("ul").empty();
+        console.log("in boardsetview render, model size "+this.model.models.length)
+        this.$("#trip-board").empty();
         _.forEach(this.model.models, function (item) {
-            $(this.el).find("ul").append((new BoardItemView({model:item})).render().el)
+            this.$("#trip-board").append((new BoardItemView({model:item})).render().el)
         }, this)
         return this;
     }
@@ -307,5 +308,15 @@ var EditTripView = Backbone.View.extend({
     cancel: function(e) {
         e.preventDefault();
         this.unrender();
+    }
+})
+
+var LoginView = Backbone.View.extend({
+    el : $("#pagecontent"),
+    template : _.template($("#LoginTemplate").html()),
+    render : function () {    
+        this.$("#pagecontent").empty();
+        $(this.el).html(this.template());
+        return this;
     }
 })
