@@ -1,4 +1,5 @@
 # Django settings for zebebo project.
+import allauth
 from utils import here
 
 DEBUG = True
@@ -34,7 +35,7 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
+SITE_ID = 2
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -99,8 +100,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     
-    'allauth.context_processors.allauth',
-    'allauth.account.context_processors.account',
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -112,7 +113,9 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    'allauth.account.auth_backends.AuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 ROOT_URLCONF = 'zebebo_app.urls'
@@ -121,7 +124,6 @@ TEMPLATE_DIRS = (here('templates'),)
 
 AVATAR_STORAGE_DIR = 'uploads/avatars'
 LOGIN_REDIRECT_URL = '/'
-ACCOUNT_EMAIL_REQUIRED = True
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -135,12 +137,12 @@ INSTALLED_APPS = (
     # django-allauth
     'avatar',
     'uni_form',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.facebook',
-    'emailconfirmation',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
     
     # zebebo_app applicatons
     'zebebo_app.board',

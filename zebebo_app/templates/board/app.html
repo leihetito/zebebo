@@ -3,6 +3,9 @@
 {% block javascripts %}
     <script>
         app = new AppRouter();
+        app.user = "{{ username }}";
+        app.userid = "{{ userid }}";
+        
         Backbone.history.start({pushState: true});
         
         if (Backbone.history && Backbone.history._hasPushState) {
@@ -18,15 +21,7 @@
     </script>
 {% endblock %}
 
-{% block content %}    
-	<div id="logindiv"></div>
-    <script type="text/template" id="LoginTemplate">
-    	<form class="form-horizontal">
-      		
-    	    <button type="submit" class="btn primary save">Login</button>
-        </form>
-    </script>
-    
+{% block content %}        
     <div id="trip-container" class="container-fluid">
         <a style="float:right; margin-top:4px; margin-bottom:3px;" class="btn new" 
         href="#">Add Trip</a>
@@ -35,7 +30,7 @@
    
     <div id="stages">
     	<table id="segmentTable" class="segmentTable table table-striped" cellpadding="4"></table>
-    	<p><a href="#" class="add">add</a></p>
+    	<button class="btn btn-inverse add_seg">Add a Segment</button>
     	</div>
     </div>
     

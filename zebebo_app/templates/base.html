@@ -32,24 +32,24 @@
 <body>
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
 
+<div id="pagecontent">
 <div class="navbar">
     <div class="navbar-inner">
 	    <a class="brand" href="#">Zebebo</a>
+    	<div align="right">
+    	{% if user.is_authenticated %}
+    		{% for account in user.socialaccount_set.all %}
+    			{{ user }}
+				<img width="40" height="40" src="{{ account.get_avatar_url }}" />
+		    {% endfor %}
+			<a class="text-success" href="{% url account_logout %}?next=/accounts/login/">Logout</a>
+		{% endif %}
+		</div>
     	
-    	
-    	<form class="form-inline">
-    		<input type="text" class="input-small" placeholder="Email">
-    		<input type="password" class="input-small" placeholder="Password">
-    		<label class="checkbox">
-    		<input type="checkbox"> Remember me
-    		</label>
-    		<button type="submit" class="btn">Sign in</button>
-    	</form>
     </div>
 </div>
-
-{% block content %}{% endblock %}
 </div>
+{% block content %}{% endblock %}
 
 <!-- backbone application -->
 <script src="{{ STATIC_URL }}js/app/models.js"></script>

@@ -7,7 +7,7 @@ var BoardSet = Backbone.Collection.extend({
 })
 
 var TripSegment = Backbone.Model.extend( {
-    urlRoot: "/api/tripsegment/"   
+    urlRoot: "/api/tripsegment/"
 })
 var TripSegmentSet = Backbone.Collection.extend({
     url : "/api/tripsegment/"

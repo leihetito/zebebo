@@ -1,13 +1,17 @@
 var AppRouter = Backbone.Router.extend({
     routes : {
         "" : "list",
-        "login" : "login",
         "board/:id" : "board"
     },
     list : function () {
+        if(typeof app.user == 'undefined') {
+            console.log("user is not logged in")
+            return;
+        }
+        
         this.boards = new BoardSet();
         this.boards_view = new BoardSetView({model:this.boards})
-        this.boards.fetch(); // retrieve from server
+        this.boards.fetch({data: { username: app.user }}); // retrieve from server
     },
     board : function (id) {
         var self = this;
@@ -25,14 +29,12 @@ var AppRouter = Backbone.Router.extend({
         
         var segments = new TripSegmentSet();
         board = this.boards.get("/api/board/"+id+"/")
+
         this.tripsegmentset_view = new TripSegmentSetView({model:segments},{board: board})
         segments.fetch({data:{board:id}})
         
         //hide the trip notes section 
         console.log("empty notes section")
         $("#tripsegmentnotes").empty();
-    },
-    login: function() {
-        this.loginView = new LoginView()
     }
 })

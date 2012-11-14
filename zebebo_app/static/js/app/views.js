@@ -28,7 +28,6 @@ var TripSegmentItemView = Backbone.View.extend({
     
     template : _.template( $("#TripSegmentTemplate").html()),
     initialize : function () {
-        this.model.bind('change', this.render, this)                                         
     },
     events : {
         "click .delete" : "delete_segment"      
@@ -38,9 +37,9 @@ var TripSegmentItemView = Backbone.View.extend({
         e.preventDefault();
         var del = confirm('Are you sure you want to delete this segment?');
         if (del) {
-            //app.boards.remove(this.model);
+            console.log("destroying model " + this.model.id)
             this.model.destroy();
-            $(this.el).remove();
+            $(this.el).remove();            
         }
     },
     render : function () {
@@ -58,13 +57,14 @@ var TripSegmentSetView = Backbone.View.extend({
     notesView: null,
     
     initialize : function (model, options) {
+        $(this.el).attr("id", "segmentitem-" + this.model.get("id"))
         this.board = options["board"];
         this.model.bind('reset', this.render, this);
         this.model.bind("add", this.reorder, this);
         this.model.bind("remove", this.reorder, this);
     },
     events : {
-        "click .add"            : "add_segment",
+        "click .add_seg"        : "add_segment",
         "click .table tbody tr" : "row_clicked",
         "click .moveup"         : "row_up",
         "click .movedown"       : "row_down",
@@ -94,11 +94,10 @@ var TripSegmentSetView = Backbone.View.extend({
                                    order: this.model.length+1
                           });
                
-               console.log(tripSegment.toJSON())
                tripSegment.save()
                $("#add_seg_form").modal("hide");
-               
-               this.model.fetch()
+                      
+               //this.model.fetch({data:{board:this.board.get('id')}}) 
            }, this))    
     },
     row_clicked : function(ev) {
@@ -206,6 +205,7 @@ var BoardItemView = Backbone.View.extend({
     },
     initialize : function () {
         $(this.el).attr("id", "boarditem-" + this.model.get("id"))
+        this.model.bind("remove", this.render, this);
     },
     make_active : function () {
         $(this.el).siblings().removeClass("activebox").addClass("box")
@@ -296,7 +296,9 @@ var EditTripView = Backbone.View.extend({
         var notes = this.$('textarea[name=notes]').val();
        
         this.model.set({ title: title, origin: origin, destination: destination, 
-                         fromDate: fromDate, toDate: toDate, notes: notes });
+                         fromDate: fromDate, toDate: toDate, notes: notes,
+                         user: { username: app.user }
+                       });
         this.model.save();
 
         app.boards.fetch();
@@ -311,12 +313,3 @@ var EditTripView = Backbone.View.extend({
     }
 })
 
-var LoginView = Backbone.View.extend({
-    el : $("#pagecontent"),
-    template : _.template($("#LoginTemplate").html()),
-    render : function () {    
-        this.$("#pagecontent").empty();
-        $(this.el).html(this.template());
-        return this;
-    }
-})
