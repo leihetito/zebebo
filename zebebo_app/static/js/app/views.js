@@ -58,7 +58,8 @@ var TripSegmentSetView = Backbone.View.extend({
     
     initialize : function (model, options) {
         $(this.el).attr("id", "segmentitem-" + this.model.get("id"))
-        this.board = options["board"];
+        this.board = options["board"];        
+        this.model.bind('change', this.render, this);
         this.model.bind('reset', this.render, this);
         this.model.bind("add", this.reorder, this);
         this.model.bind("remove", this.reorder, this);
@@ -77,6 +78,7 @@ var TripSegmentSetView = Backbone.View.extend({
         $("#add_seg_form")
             .find(".save")
             .click(_.bind(function () {
+               var self = this;
                var data = {}
                var form_data = $("#add_seg_form form").serializeArray();
                for (var i in form_data) {
@@ -94,11 +96,20 @@ var TripSegmentSetView = Backbone.View.extend({
                                    order: this.model.length+1
                           });
                
-               tripSegment.save()
-               $("#add_seg_form").modal("hide");
-                      
-               //this.model.fetch({data:{board:this.board.get('id')}}) 
-           }, this))    
+               tripSegment.save(null, {
+                    success: function (model) {
+                        self.model.fetch({data:{board:this.board.get('id')}})                 
+                        app.navigate('board/' + this.board.get('id'), false);
+                        utils.showAlert('Success!', 'Trip saved successfully', 'alert-success');
+                        $("#add_seg_form").modal("hide");  
+                    },
+                    error: function () {
+                        utils.showAlert('Error', 'An error occurred while saving this item', 'alert-error');
+                        $("#add_seg_form").modal("hide");  
+                    }
+                });
+               }, this))  
+                    
     },
     row_clicked : function(ev) {
       if(!$(ev.target).is("TD"))
@@ -175,7 +186,7 @@ var TripSegmentSetView = Backbone.View.extend({
             segment.save()
         }) 
     },
-    render : function () {
+    render : function () {           
         console.log("in render, size of model "+this.model.length)
 
         if(this.model.length == 0) {
