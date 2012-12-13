@@ -1,0 +1,44 @@
+{% extends "account/base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/style.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui-1.8.23.custom.css">
+
+<script src="{{ STATIC_URL }}js/libs/bootstrap/bootstrap.js"></script>
+<script src="{{ STATIC_URL }}js/libs/bootstrap/bootstrap.min.js"></script>
+{% endblock %}
+
+{% load i18n %}
+{% load account %}
+{% load url from future %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+
+{% block content %}
+
+
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+      	<div class="container overlay" align="center">
+        <h2>Social Trip Planning<br>
+        	<h3>Plan, Share, Go</h3>        	
+        </h2>
+        
+        <div class="socialaccount_ballot">
+
+			<ul class="socialaccount_providers">
+				{% include "socialaccount/snippets/provider_list.html" %}
+			</ul>
+        </div>
+      </div>
+
+    
+
+    
+
+{% endblock %}
+
